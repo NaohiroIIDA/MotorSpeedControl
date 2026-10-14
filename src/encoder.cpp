@@ -7,7 +7,7 @@ uint8_t          pinA_, pinB_;
 volatile int32_t count_ = 0;
 volatile uint8_t prevState_ = 0;
 
-// [前状態<<2 | 現状態] -> 増減。不正遷移 (2ステップ飛び) は 0
+// [prevState<<2 | state] -> step. Invalid transitions (skipped states) give 0
 constexpr int8_t kTransition[16] = {
      0, +1, -1,  0,
     -1,  0,  0, +1,
@@ -33,5 +33,5 @@ void begin(uint8_t pinA, uint8_t pinB) {
     attachInterrupt(digitalPinToInterrupt(pinB), onEdge, CHANGE);
 }
 
-int32_t count() { return count_; }  // 32bit 読み出しはアトミック
+int32_t count() { return count_; }  // 32-bit reads are atomic
 }  // namespace encoder

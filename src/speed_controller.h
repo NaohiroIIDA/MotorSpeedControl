@@ -1,6 +1,6 @@
 #pragma once
 
-// フィードフォワード + PI 速度制御 (出力は duty 0..1)
+// Feedforward + PI speed control (output is duty 0..1)
 class SpeedController {
 public:
     SpeedController(float kp, float ki, float maxRpm) : kp_(kp), ki_(ki), maxRpm_(maxRpm) {}

@@ -14,11 +14,11 @@ float duty        = 0.0f;
 
 void printHelp() {
     Serial.println(F("commands:"));
-    Serial.println(F("  t <rpm>  目標回転数 [出力軸 rpm]"));
-    Serial.println(F("  s        停止"));
-    Serial.println(F("  kp <v>   比例ゲイン"));
-    Serial.println(F("  ki <v>   積分ゲイン"));
-    Serial.println(F("  ?        ヘルプ / 現在のゲイン表示"));
+    Serial.println(F("  t <rpm>  target speed [output shaft rpm]"));
+    Serial.println(F("  s        stop"));
+    Serial.println(F("  kp <v>   proportional gain"));
+    Serial.println(F("  ki <v>   integral gain"));
+    Serial.println(F("  ?        help / show current gains"));
     Serial.printf("kp=%.5f ki=%.5f\n", controller.getKp(), controller.getKi());
 }
 
@@ -70,7 +70,7 @@ void controlStep(float dt) {
 }
 
 void updateStatusLed() {
-    // 停止: 青 / 目標±5%以内: 緑 / 追従中: 黄
+    // Stopped: blue / within ±5% of target: green / tracking: yellow
     uint32_t color = statusLed.Color(0, 0, 255);
     if (targetRpm > 0.0f) {
         const bool onTarget = fabsf(targetRpm - measuredRpm) < targetRpm * 0.05f;
@@ -104,7 +104,7 @@ void loop() {
     const uint32_t nowMs = millis();
     if (nowMs - lastTelemetryMs >= TELEMETRY_PERIOD_MS) {
         lastTelemetryMs = nowMs;
-        // シリアルプロッタ向け key:value 形式
+        // key:value format for the serial plotter
         Serial.printf("target:%.1f rpm:%.1f duty:%.1f\n", targetRpm, measuredRpm, duty * 100.0f);
         updateStatusLed();
     }

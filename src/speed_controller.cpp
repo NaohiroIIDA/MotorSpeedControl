@@ -7,10 +7,10 @@ float SpeedController::update(float targetRpm, float measuredRpm, float dt) {
     }
 
     const float error = targetRpm - measuredRpm;
-    const float ff    = targetRpm / maxRpm_;  // 無負荷特性からの概算 duty
+    const float ff    = targetRpm / maxRpm_;  // Approximate duty from the no-load characteristic
     const float unsat = ff + kp_ * error + integral_ + ki_ * error * dt;
 
-    // アンチワインドアップ: 飽和をさらに深める方向には積分しない
+    // Anti-windup: don't integrate in the direction that deepens saturation
     const bool saturatedHigh = unsat > 1.0f && error > 0.0f;
     const bool saturatedLow  = unsat < 0.0f && error < 0.0f;
     if (!saturatedHigh && !saturatedLow) {
