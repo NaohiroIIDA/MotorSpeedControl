@@ -17,7 +17,7 @@ You type a target speed (for example `t 60` for 60 rpm) into the serial monitor.
 |---|---|
 | Waveshare RP2040-Zero | Microcontroller board |
 | DFRobot FIT0403 | 12V geared motor (90:1, 122rpm at the output shaft with no load) with a built-in quadrature encoder |
-| Logic-level N-ch MOSFET | Switches the motor on the low side (between the motor and GND). The RP2040 drives the gate at 3.3V, so choose a part whose on-resistance (Rds(on)) is specified at a gate voltage of 3.3V or lower. Pick a drain-source voltage of 30V or more and a current rating well above the motor's current |
+| Logic-level N-ch MOSFET | Switches the motor on the low side (between the motor and GND). **This build uses the Toshiba 2SK4017.** If you use a different part, note that the RP2040 drives the gate at only 3.3V: choose one whose on-resistance (Rds(on)) is specified at a low gate voltage, with a drain-source voltage of 30V or more and a current rating well above the motor's current |
 | Flyback diode | A Schottky diode such as the 1N5822 (3A, 40V). It absorbs the voltage spike when the motor switches off |
 | Resistors | 100Ω (gate series resistor) and 10kΩ (gate pull-down) |
 | 12V DC power supply | Powers the motor, for example an AC adapter with a DC jack |
@@ -64,7 +64,7 @@ These are the colours given by DFRobot. Check them against your own cable before
 > [!WARNING]
 > - **Never connect 12V to any RP2040-Zero pin**, including 5V and 3V3. The RP2040-Zero is powered from USB only.
 > - **Connect the 12V supply − to the RP2040 GND.** Without a shared GND, the MOSFET will not switch.
-> - **Check the MOSFET pinout in its datasheet.** Many TO-220 parts are G-D-S from left to right when viewed from the front, but not all.
+> - **Check the MOSFET pinout in its datasheet.** The 2SK4017 is G-D-S from left to right when viewed from the front (the side with the markings). Many other TO-220 parts are the same, but not all.
 > - **Mind the diode direction.** If it is reversed, it shorts the 12V supply when the MOSFET turns on.
 
 The encoder is powered from 3.3V here, so phases A/B can connect straight to the RP2040 pins. This has been tested on real hardware. If you power the encoder from 5V instead, you need a level shifter on A/B, because the RP2040 pins only accept up to 3.3V.
